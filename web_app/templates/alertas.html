@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block contenido %}
+<div class="card">
+
+  <!-- Encabezado del historial -->
+  <div class="card card-azul-suave">
+    <h2 class="titulo">Listado de alertas generadas</h2>
+    <strong>Total de alertas: {{ alertas|length }}</strong>
+  </div>
+
+
+  <div class="card mb-3 p-3 d-flex justify-between align-center"
+    style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="card-scroll">
+
+      <table table class="table table-bordered table-hover text-center">
+        <thead class="sticky-header">
+          <tr>
+            <th >Archivo</th>
+            <th >Documento</th>
+            <th >Tipo Alerta</th>
+            <th >Mensaje</th>
+            <th >Valor (PEN)</th>
+            <th >Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for alerta in alertas %}
+          <tr>
+            <td>{{ alerta.archivo_id }}</td>
+            <td>{{ alerta.documento_compras }}</td>
+            <td>{{ alerta.tipo_alerta }}</td>
+            <td>{{ alerta.mensaje }}</td>
+            <td>{{ alerta.valor_convertido or '—' }}</td>
+            <td>{{ alerta.fecha_creacion.strftime('%d/%m/%Y %H:%M') }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

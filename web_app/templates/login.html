@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | Sistema de Auditoría</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body class="bg-sistema">
+  <div class=" login-card">
+    <h2 class="titulo" style="margin-bottom: 30px;">Bienvenido</h2>
+
+    <form method="POST" class="formulario">
+      <div class="input-group">
+        <label for="usuario">Usuario</label>
+        <input type="text" name="usuario" required class="input">
+      </div>
+      <div class="input-group">
+        <label for="contraseña">Contraseña</label>
+        <input type="password" name="contraseña" required class="input">
+      </div>
+      <button type="submit" class="btn btn-ingresar">Ingresar</button>
+    </form>
+  </div>
+</body>
+</html>
+
+

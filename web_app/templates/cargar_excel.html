@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block contenido %}
+<div style="display: flex; flex-wrap: wrap; gap: 18px; margin-top: 0; padding-top: 1px;">
+
+  <!-- CARD: Cargar archivo -->
+  <div class="card card-upload" style="min-width: 380px; max-width: 420px; flex: 1;">
+    <h2 class="text-2xl font-bold mb-4">Cargar Archivo Excel</h2>
+
+    <!-- MOSTRAR MENSAJE FLASH SOLO UNA VEZ -->
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+      {% if mensajes %}
+        {% for categoria, mensaje in mensajes %}
+          <div class="alerta {{ categoria }} mb-4">{{ mensaje }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="info-box mb-4 p-4 bg-blue-100 rounded">
+      <strong>Instrucciones:</strong>
+      <ul class="list-disc ml-5 mt-2">
+        <li>El archivo debe estar en formato <strong>.xlsx</strong>.</li>
+        <li>Asegúrese de mantener la estructura y nombres de columnas.</li>
+        <li>Puede <a href="{{ url_for('static', filename='plantilla.xlsx') }}" class="text-blue-600 underline"
+            download>descargar aquí una plantilla de ejemplo</a>.</li>
+      </ul>
+    </div>
+
+    <form action="{{ url_for('excel.cargar_excel') }}" method="POST" enctype="multipart/form-data">
+      <label for="archivo_excel" class="block mb-2 font-medium">Selecciona un archivo Excel (.xlsx)</label>
+      <input type="file" id="archivo_excel" name="archivo_excel" accept=".xlsx" required
+        class="block w-full text-sm text-gray-700 border border-gray-300 rounded cursor-pointer bg-white file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-medium file:bg-blue-600 file:text-white hover:file:bg-blue-700" />
+
+      <button type="submit" class="boton-primario mt-4">
+        Cargar archivo
+      </button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

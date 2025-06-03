@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block contenido %}
+
+<div class="card" style="padding: 24px; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.1); background-color: white;">
+
+  <h2 class="text-xl font-bold mb-3">Confirmar carga del archivo</h2>
+  <p class="text-sm mb-4">
+    <strong>Total de registros:</strong> {{ datos|length }}<br>
+    <strong>Archivo:</strong> {{ nombre }}
+  </p>
+
+  <form action="{{ url_for('excel.confirmar_carga') }}" method="POST">
+    <input type="hidden" name="archivo_id" value="{{ archivo_id }}">
+    <button type="submit" class="boton-primario w-full mb-6">Confirmar cargar</button>
+  </form>
+
+  <h3 class="text-base font-semibold mb-3">Vista previa de registros</h3>
+
+  <div style="overflow-x: auto; max-height: 420px;" class="rounded border border-gray-300 shadow-sm">
+    <table class="tabla-preview">
+      <thead>
+        <tr>
+          {% for col in columnas %}
+            <th>{{ col.replace('_', ' ') }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for fila in datos %}
+        <tr>
+          {% for celda in fila %}
+            <td>{{ celda }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+{% endblock %}

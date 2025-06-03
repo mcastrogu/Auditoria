@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block contenido %}
+<div class="card ">
+
+    <!-- Encabezado del historial -->
+    <div class="card card-azul-suave">
+        <h2 class="titulo">Historial de archivos cargados</h2>
+        <strong>Total de archivos: {{ archivos|length }}</strong>
+    </div>
+
+    <!-- Tabla en card con scroll -->
+    <div class="card mb-3 p-3 d-flex justify-between align-center" style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="card-scroll">
+            <table class="table table-bordered table-hover text-center">
+                <thead class="sticky-header">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre archivo</th>
+                        <th>Usuario</th>
+                        <th>Fecha de subida</th>
+                        <th>Estado</th>
+                        <th>Registros</th>
+                        <th>Alertas detectadas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for archivo in archivos %}
+                    <tr>
+                        <td>{{ archivo.id }}</td>
+                        <td>{{ archivo.nombre_archivo }}</td>
+                        <td>{{ archivo.nombre_usuario }}</td>
+                        <td>{{ archivo.fecha_subida }}</td>
+                        <td>{{ archivo.estado }}</td>
+                        <td>{{ archivo.cantidad_registros }}</td>
+                        <td>{{ archivo.total_alertas }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+   
+
+
+
+</div>
+
+{% endblock %}

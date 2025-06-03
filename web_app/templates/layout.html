@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Auditoría</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+    <script src="{{ url_for('static', filename='scripts.js') }}" defer></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- BARRA SUPERIOR -->
+        <header class="topbar">
+            <div class="left-topbar">
+                <button id="togglesidebar" class="toggle-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <span class="titulo-sistema">Sistema de Auditoría</span>
+            </div>
+            <div class="perfil-usuario">
+                <span class="nombre-usuario">{{ session['nombre_completo'] }}</span>
+                <div class="foto-perfil"></div>
+            </div>
+        </header>
+
+
+
+        <!-- CONTENEDOR PRINCIPAL -->
+        <div class="container">
+            <!-- BARRA LATERAL -->
+            <aside id="sidebar" class="sidebar">
+                <nav>
+                    <ul>
+                        <li class="seccion">USUARIO</li>
+                        <li><a href="{{ url_for('main.inicio') }}">Inicio</a></li>
+                        {% if session['rol'] == 'admin' %}
+                        <li><a href="{{ url_for('usuarios.gestionar_usuarios') }}">Gestión de Usuarios</a>
+                            {% endif %}
+                        </li>
+                        <li class="seccion">GESTIÓN</li>
+                        <li><a href="{{ url_for('excel.cargar_excel') }}">Gestión de archivos</a></li>
+                        <li><a href="{{ url_for('alertas.ver_alertas') }}">Alertas</a></li>
+                        <li><a href="{{ url_for('historial.ver_historial') }}">Historial</a></li>
+                        <li class="seccion">CUENTA</li>
+                        <li><a href="{{ url_for('auth.logout') }}">Cerrar sesión</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- CONTENIDO DINÁMICO -->
+            <main class="contenido">
+                {% block contenido %}
+                <div class="card card-inicio">
+                    <h2 class="titulo-inicio">Bienvenido, {{ session['nombre_completo'] }}</h2>
+                    <p class="descripcion-inicio">Estás en el sistema de auditoría.</p>
+
+                    <div class="info-bloque">
+                        <p><strong>Objetivo:</strong> Identificar discrepancias en los archivos de compras cargados
+                            desde SAP, mediante análisis automatizados y modelos de <strong>Machine Learning</strong>.
+                        </p>
+
+                        <p><strong>¿Qué puedes hacer en este sistema?</strong></p>
+                        <ul class="lista-inicio">
+                            <li><strong>Gestión de archivos:</strong> Subir archivos para su validación automática.</li>
+                            <li><strong>Alertas:</strong> Ver discrepancias detectadas por el sistema.</li>
+                            <li><strong>Historial:</strong> Revisar archivos cargados y resultados previos.</li>
+                            <li><strong>Cerrar sesión:</strong> Finalizar tu acceso de manera segura.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                {% endblock %}
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>
