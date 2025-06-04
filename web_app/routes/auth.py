@@ -7,7 +7,7 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    from web_app import app
+    from web_app.app import app
     app.logger.debug("🔐 Intentando iniciar sesión")
 
     if request.method == 'POST':
