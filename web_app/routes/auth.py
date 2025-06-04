@@ -7,26 +7,33 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    try:
-        if request.method == 'POST':
-            usuario = request.form['usuario']
-            contraseña = request.form['contraseña']
+    if request.method == 'POST':
+        usuario = request.form['usuario']
+        contraseña = request.form['contraseña']
 
-            # VALIDACIÓN MANUAL SIMPLIFICADA
-            if usuario == 'admin' and contraseña == 'admin':
-                session['usuario'] = 'admin'
-                session['rol'] = 'admin'
-                return redirect(url_for('main.inicio'))
+        try:
+            conexion = obtener_conexion()
+            cursor = conexion.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM usuarios WHERE nombre_usuario = %s AND password_hash = %s", (usuario, contraseña))
+            user = cursor.fetchone()
+            cursor.close()
+            conexion.close()
+
+            if user:
+                session['usuario_id'] = user['id']
+                session['usuario'] = user['nombre_usuario']
+                session['rol'] = user['rol']
+                session['nombre_completo'] = user['nombres'] + ' ' + user['apellidos']
+                return redirect(url_for('main.inicio'))  # Ajusta si es otra ruta
 
             flash('Credenciales inválidas. Intenta nuevamente.', 'danger')
-            return render_template('login.html')
 
-        return render_template('login.html')
+        except Exception as e:
+            app.logger.error(f"Error durante login para {usuario}: {e}")
+            flash('Ocurrió un error interno. Inténtalo más tarde.', 'danger')
 
-    except Exception as e:
-        app.logger.error(f"❌ Error inesperado en login: {e}")
-        flash("Error interno al procesar la solicitud. Intenta nuevamente.", "danger")
-        return render_template('login.html')
+    return render_template('login.html')
+
 
 
 
