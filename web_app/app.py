@@ -6,6 +6,9 @@ from web_app.routes.alertas_routes import alertas_bp
 from web_app.routes.historial_routes import historial_bp
 from web_app.routes.usuarios_routes import usuarios_bp
 
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
 app = Flask(__name__)
 app.secret_key = 'aprobemostesisaunqueestamossufriendo'
 
