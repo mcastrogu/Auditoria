@@ -7,7 +7,7 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    from web_app.app import app
+    from flask import current_app as app
     app.logger.debug("🔐 Intentando iniciar sesión")
 
     if request.method == 'POST':
@@ -48,8 +48,6 @@ def login():
             return render_template('login.html')
 
     return render_template('login.html')
-
-
 
 @auth_bp.route('/logout')
 def logout():
