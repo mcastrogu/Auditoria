@@ -2,12 +2,12 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from core.db.conexion import obtener_conexion
 import time
 
-from web_app import app
 
 auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
+    from web_app import app
     app.logger.debug("🔐 Intentando iniciar sesión")
 
     if request.method == 'POST':
