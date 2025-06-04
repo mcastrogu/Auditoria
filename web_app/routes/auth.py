@@ -24,18 +24,15 @@ def login():
                 session['usuario'] = user['nombre_usuario']
                 session['rol'] = user['rol']
                 session['nombre_completo'] = user['nombres'] + ' ' + user['apellidos']
-                return redirect(url_for('main.inicio'))  # Ajusta si es otra ruta
+                return redirect(url_for('main.inicio'))
 
             flash('Credenciales inválidas. Intenta nuevamente.', 'danger')
 
         except Exception as e:
-            app.logger.error(f"Error durante login para {usuario}: {e}")
-            flash('Ocurrió un error interno. Inténtalo más tarde.', 'danger')
+            print(f"[ERROR] Durante login: {e}")
+            flash('Error interno. Intenta más tarde.', 'danger')
 
     return render_template('login.html')
-
-
-
 
 @auth_bp.route('/logout')
 def logout():
