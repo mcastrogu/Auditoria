@@ -19,4 +19,5 @@ def obtener_conexion(nombre_bd="sistema_auditoria_db"):
         password=os.getenv("DB_PASSWORD"),
         port=str(os.getenv("DB_PORT")),
         database=str(nombre_bd) 
+        connection_timeout=5  
     )
