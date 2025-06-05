@@ -22,10 +22,7 @@ app.register_blueprint(alertas_bp)
 app.register_blueprint(historial_bp)
 app.register_blueprint(usuarios_bp)
 
-# Ruta base para verificar que el sistema esté funcionando
-@app.route('/')
-def index():
-    return "Sistema en línea. Ir a <a href='/login'>/login</a>"
+
 
 
 
