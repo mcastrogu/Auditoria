@@ -20,20 +20,18 @@ def obtener_conexion():
     )
 
 # Consulta tipo de cambio desde la base de datos
-import mysql.connector
-from core.db.conexion import obtener_conexion
 
 def obtener_tipo_cambio(moneda_origen, moneda_destino="PEN", conexion=None):
     if not conexion:
         return None
 
+    hoy = date.today()
     cursor = conexion.cursor()
     cursor.execute("""
         SELECT tipo_cambio FROM conversion_moneda
-        WHERE moneda_origen = %s AND moneda_destino = %s AND DATE(fecha) = CURDATE()
-    """, (moneda_origen.upper(), moneda_destino.upper()))
+        WHERE moneda_origen = %s AND moneda_destino = %s AND fecha = %s
+    """, (moneda_origen.upper(), moneda_destino.upper(), hoy))
 
-    
     resultado = cursor.fetchone()
     cursor.close()
     
@@ -42,13 +40,15 @@ def obtener_tipo_cambio(moneda_origen, moneda_destino="PEN", conexion=None):
     else:
         return None
 
+
 def guardar_tipo_cambio_si_no_existe(moneda_origen, moneda_destino, conexion):
+    hoy = date.today()
     cursor = conexion.cursor()
     cursor.execute("""
         SELECT tipo_cambio FROM conversion_moneda
-        WHERE moneda_origen = %s AND moneda_destino = %s AND fecha = CURDATE()
+        WHERE moneda_origen = %s AND moneda_destino = %s AND fecha = %s
         LIMIT 1
-    """, (moneda_origen, moneda_destino))
+    """, (moneda_origen, moneda_destino, hoy))
     resultado = cursor.fetchone()
 
     if resultado:
@@ -63,13 +63,14 @@ def guardar_tipo_cambio_si_no_existe(moneda_origen, moneda_destino, conexion):
         if tipo_cambio:
             cursor.execute("""
                 INSERT INTO conversion_moneda (moneda_origen, moneda_destino, tipo_cambio, fecha)
-                VALUES (%s, %s, %s, CURDATE())
-            """, (moneda_origen, moneda_destino, tipo_cambio))
+                VALUES (%s, %s, %s, %s)
+            """, (moneda_origen, moneda_destino, tipo_cambio, hoy))
             conexion.commit()
             return tipo_cambio
     except Exception as e:
         print(f"❌ Error al consultar API de tipo de cambio: {e}")
         return None
+
 
 # Consulta tipo de cambio desde la API
 def consultar_api_tipo_cambio(moneda_origen, moneda_destino):

@@ -9,7 +9,7 @@ load_dotenv()
 def obtener_conexion(nombre_bd="sistema_auditoria_db"):
     """
     Retorna una conexión a la base de datos especificada.
-    Por defecto se conecta a 'sistema_auditoria_db_pruebas'.
+    Por defecto se conecta a 'sistema_auditoria_db'.
     """
     print("PORT =", os.getenv("DB_PORT"), "| TYPE =", type(os.getenv("DB_PORT")))
 
