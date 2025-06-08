@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Login | Sistema de Auditoría</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
 </head>
+
 <body class="bg-sistema">
+
+  <!-- Encabezado encima del login-card -->
+  <div class="encabezado-login-centrado ">
+    <h1>Sistema de Auditoría</h1>
+    <p>Automatizacion en el proceso de Compras Menores</p>
+  </div>
+
   <div class=" login-card">
     <h2 class="titulo" style="margin-bottom: 30px;">Bienvenido</h2>
 
@@ -19,10 +28,9 @@
         <input type="password" name="contraseña" required class="input">
       </div>
       <button type="submit" class="btn btn-ingresar">Ingresar</button>
-      
+
     </form>
   </div>
 </body>
+
 </html>
-
-

@@ -21,7 +21,7 @@ def login():
             session['usuario_id'] = user['id']
             session['usuario'] = user['nombre_usuario']
             session['rol'] = user['rol']
-            session['nombre_completo'] = user['nombres'] + ' ' + user['apellidos']  # ✅ Aquí
+            session['nombre_completo'] = user['nombres'] + ' ' + user['apellidos']  
             session['inicio_sesion'] = time.time()
 
             # Justo después de login exitoso
@@ -30,9 +30,9 @@ def login():
             flash('Inicio de sesión exitoso.', 'success')
 
             if user['rol'] == 'admin':
-                return redirect(url_for('main.inicio'))  # o main.dashboard_admin si tienes
+                return redirect(url_for('main.inicio'))  # o main.dashboard_admin si tienesse tiene
             else:
-                return redirect(url_for('main.inicio'))  # o main.dashboard_auditor si lo separas
+                return redirect(url_for('main.inicio'))  # o main.dashboard_auditor 
         else:
             flash('Credenciales inválidas. Intenta nuevamente.', 'danger')
             return render_template('login.html')

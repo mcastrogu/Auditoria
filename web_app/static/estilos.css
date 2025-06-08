@@ -403,6 +403,7 @@ thead {
   box-shadow: 0 8px 16px rgba(54, 0, 0, 0.1);
   width: 360px;
   text-align: center;
+  margin: 60px auto 0;
 }
 
 .titulo {
@@ -941,3 +942,28 @@ thead {
 .lista-inicio li {
   margin-bottom: 8px;
 }
+
+
+/* Encabezado como bloque fuera del login-card */
+.encabezado-login-centrado {
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #111d4a;
+
+}
+
+.encabezado-login-centrado h1 {
+  font-size: 42px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.encabezado-login-centrado p {
+  font-size: 22px;
+  color: #fff9f9;
+}
+
+

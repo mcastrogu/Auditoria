@@ -13,6 +13,7 @@ from core.procesamiento.procesar_excel import obtener_id_compania
 from core.procesamiento.alertas import generar_alertas_por_modelo
 from web_app.utils.decoradores import login_requerido
 from core.procesar_indicadores import procesar_indicadores
+from core.procesamiento.conversion import guardar_tipo_cambio_si_no_existe
 
 excel_bp = Blueprint('excel', __name__)
 
@@ -155,16 +156,19 @@ def confirmar_carga_post():
     columnas = [desc[0] for desc in cursor.description]
 
     
-    # Asegurar que el tipo de cambio esté registrado hoy
-    registrar_si_no_existe("USD", "PEN")
-    registrar_si_no_existe("EUR", "PEN")
+    # Obtener tipo de cambio desde la base o API (evita doble llamada)
+    usd_pen = guardar_tipo_cambio_si_no_existe("USD", "PEN", conexion)
+    if usd_pen is None:
+        print("⚠️ No se pudo obtener tipo de cambio USD → PEN. Deteniendo carga.")
+        flash("❌ No se pudo obtener el tipo de cambio USD → PEN.", "error")
+        return redirect(url_for("excel.cargar_excel"))
 
-    
+    eur_pen = guardar_tipo_cambio_si_no_existe("EUR", "PEN", conexion)
+    if eur_pen is None:
+        print("⚠️ No se pudo obtener tipo de cambio EUR → PEN. Deteniendo carga.")
+        flash("❌ No se pudo obtener el tipo de cambio EUR → PEN.", "error")
+        return redirect(url_for("excel.cargar_excel"))
 
-    # Obtener tipo de cambio
-    usd_pen = obtener_tipo_cambio("USD", "PEN", conexion) 
-    eur_pen = obtener_tipo_cambio("EUR", "PEN", conexion) 
-    
     if usd_pen is None:
         print("❌ Error: No se obtuvo el tipo de cambio USD → PEN")
         return redirect(url_for("excel.cargar_excel"))  # o un flash de error

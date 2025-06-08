@@ -44,6 +44,8 @@ def obtener_tipo_cambio(moneda_origen, moneda_destino="PEN", conexion=None):
 def guardar_tipo_cambio_si_no_existe(moneda_origen, moneda_destino, conexion):
     hoy = date.today()
     cursor = conexion.cursor()
+
+    # Verificar si ya existe el tipo de cambio
     cursor.execute("""
         SELECT tipo_cambio FROM conversion_moneda
         WHERE moneda_origen = %s AND moneda_destino = %s AND fecha = %s
@@ -52,11 +54,11 @@ def guardar_tipo_cambio_si_no_existe(moneda_origen, moneda_destino, conexion):
     resultado = cursor.fetchone()
 
     if resultado:
-        return resultado[0]
+        return resultado[0]  # Ya existe, se retorna directamente
 
-    # Si no existe, llamar API
+    # Si no existe, consultar la API e insertar
     try:
-        url = f"https://v6.exchangerate-api.com/v6/6eccdce87b4e32c975299c6d/latest/{moneda_origen}"
+        url = f"https://v6.exchangerate-api.com/v6/{API_KEY}/latest/{moneda_origen}"
         respuesta = requests.get(url).json()
         tipo_cambio = respuesta["conversion_rates"].get(moneda_destino)
 
@@ -66,10 +68,18 @@ def guardar_tipo_cambio_si_no_existe(moneda_origen, moneda_destino, conexion):
                 VALUES (%s, %s, %s, %s)
             """, (moneda_origen, moneda_destino, tipo_cambio, hoy))
             conexion.commit()
+            print(f"✅ Registrado tipo de cambio {moneda_origen} → {moneda_destino}: {tipo_cambio}")
             return tipo_cambio
+        else:
+            print("❌ No se obtuvo el tipo de cambio desde la API (valor nulo o inválido)")
+            return None
+
     except Exception as e:
         print(f"❌ Error al consultar API de tipo de cambio: {e}")
         return None
+    finally:
+        cursor.close()
+
 
 
 # Consulta tipo de cambio desde la API
