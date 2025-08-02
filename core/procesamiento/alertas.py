@@ -17,7 +17,7 @@ def generar_alertas_por_modelo(archivo_id, conexion):
     registros = cursor.fetchall()
 
     if not registros:
-        print("⚠️ No hay registros para aplicar modelo ML.")
+        print(" No hay registros para aplicar modelo ML.")
         return
 
     df = pd.DataFrame(registros, columns=["id", "valor_convertido"])
@@ -26,7 +26,7 @@ def generar_alertas_por_modelo(archivo_id, conexion):
     modelo = IsolationForest(contamination=0.1, random_state=42)
     df["es_anomalia"] = modelo.fit_predict(df[["valor_convertido"]])
     df["es_anomalia"] = df["es_anomalia"].apply(lambda val: 1 if val == -1 else 0)
-
+    
     insertados = 0
     for _, fila in df[df["es_anomalia"] == 1].iterrows():
         compra_id = int(fila["id"])
@@ -40,7 +40,7 @@ def generar_alertas_por_modelo(archivo_id, conexion):
         else:
             tipo_alerta = "leve"
 
-        mensaje = f"⚠️ Compra anómala de {valor:,.2f} soles detectada por modelo – clasificada como {tipo_alerta.upper()}"
+        mensaje = f" Compra anómala de {valor:,.2f} soles detectada por modelo – clasificada como {tipo_alerta.upper()}"
 
         # Insertar en tabla de alertas
         cursor.execute("""
@@ -50,10 +50,9 @@ def generar_alertas_por_modelo(archivo_id, conexion):
 
         insertados += 1
 
-
     cursor.close()
    
-    print(f"✅ Alertas por modelo ML generadas y clasificadas: {insertados}")
+    print(f" Alertas por modelo ML generadas y clasificadas: {insertados}")
 
 
     

@@ -29,11 +29,11 @@ def cargar_excel():
         archivo = request.files.get('archivo_excel')
 
         if not archivo:
-            flash("⚠️ No se seleccionó ningún archivo.", "error")
+            flash("No se seleccionó ningún archivo.", "error")
             return render_template('cargar_excel.html')
 
         if not extension_valida(archivo.filename):
-            flash("❌ El archivo debe ser formato .xlsx", "error")
+            flash("El archivo debe ser formato .xlsx", "error")
             return render_template('cargar_excel.html')
 
         try:
@@ -49,7 +49,7 @@ def cargar_excel():
 
             faltantes = [col for col in columnas_relevantes if col not in df.columns]
             if faltantes:
-                flash(f"❌ Faltan columnas requeridas: {', '.join(faltantes)}", "error")
+                flash(f" Faltan columnas requeridas: {', '.join(faltantes)}", "error")
                 return render_template('cargar_excel.html')
 
             df_filtrado = df[columnas_relevantes]
@@ -156,22 +156,19 @@ def confirmar_carga_post():
     columnas = [desc[0] for desc in cursor.description]
 
     
-    # Obtener tipo de cambio desde la base o API (evita doble llamada)
+    # Obtener tipo de cambio desde la base o API para evita doble llamada
     usd_pen = guardar_tipo_cambio_si_no_existe("USD", "PEN", conexion)
     if usd_pen is None:
-        print("⚠️ No se pudo obtener tipo de cambio USD → PEN. Deteniendo carga.")
-        flash("❌ No se pudo obtener el tipo de cambio USD → PEN.", "error")
+        flash(" No se pudo obtener el tipo de cambio USD → PEN.", "error")
         return redirect(url_for("excel.cargar_excel"))
 
     eur_pen = guardar_tipo_cambio_si_no_existe("EUR", "PEN", conexion)
     if eur_pen is None:
-        print("⚠️ No se pudo obtener tipo de cambio EUR → PEN. Deteniendo carga.")
-        flash("❌ No se pudo obtener el tipo de cambio EUR → PEN.", "error")
+        flash(" No se pudo obtener el tipo de cambio EUR → PEN.", "error")
         return redirect(url_for("excel.cargar_excel"))
 
     if usd_pen is None:
-        print("❌ Error: No se obtuvo el tipo de cambio USD → PEN")
-        return redirect(url_for("excel.cargar_excel"))  # o un flash de error
+        return redirect(url_for("excel.cargar_excel"))  
 
 
     insertados = 0
