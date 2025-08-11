@@ -1,8 +1,6 @@
 import os
 import mysql.connector
-from dotenv import load_dotenv
 
-load_dotenv()
 
 def obtener_conexion(nombre_bd="sistema_auditoria_db"):
     """
