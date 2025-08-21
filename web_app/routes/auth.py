@@ -30,7 +30,7 @@ def login():
             flash('Inicio de sesión exitoso.', 'success')
 
             if user['rol'] == 'admin':
-                return redirect(url_for('main.inicio'))  # o main.dashboard_admin si tienesse tiene
+                return redirect(url_for('main.inicio'))  # o main.dashboard_admin si se tiene
             else:
                 return redirect(url_for('main.inicio'))  # o main.dashboard_auditor 
         else:
